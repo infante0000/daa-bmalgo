@@ -29,9 +29,6 @@ def boyer_moore_match(text, pattern):
     while s <= n - m:
         j = m - 1
 
-        # Keep reducing index j of pattern while
-        # characters of pattern and text are matching
-        # at this shift s
         while j >= 0 and pattern[j] == text[s + j]:
             j -= 1
 
@@ -58,7 +55,6 @@ def censorFile(txt):
     df = pd.read_excel('swear_words.xlsx', 'Sheet1')
     swear_words = df['swear_words_list'].values.tolist()
 
-    # looping of censoring
     for word_list in swear_words:
         pattern = word_list
         boyer_moore_match(txt, pattern)
@@ -66,6 +62,7 @@ def censorFile(txt):
         print("\nPattern: " + pattern)
         print("List of Index: ")
         print(*list_index)
+        # looping of censoring
         for i in list_index:
             print("Replacing at Index: " + str(i)[1:-1])
             currIndex = int(str(i)[1:-1])
