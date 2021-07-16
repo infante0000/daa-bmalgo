@@ -46,10 +46,10 @@ def progressBar():
 
 
 def speakBtn():
-    ogText.delete(1.0, END)
     mixer.init()
     mixer.music.load('audio/chime.mp3')
     mixer.music.play()
+    clearBtn()
 
     r = sr.Recognizer()
 
@@ -73,11 +73,9 @@ def speakBtn():
             mixer.music.load('audio/chime-end.mp3')
             mixer.music.play()
 
-            ogText.focus()
             ogText.delete(1.0, END)
             ogText.insert(1.0, text)
             print(text)
-            ogText.configure(state='disabled')
         except:
             messagebox.showerror("Error", "Sorry I can't recognize the audio. Please try again!")
             print("Sorry. I Don't Recognize The Audio")
@@ -161,8 +159,33 @@ def censorBtn():
     if ogText.get(1.0, END) == '\n':
         messagebox.showerror("Error", "There is no input to be censored.")
     else:
+        censorText.delete(1.0, END)
+        censor.list_pattern.clear()
         redacted = censor.censorFile(ogText.get(1.0, END))
         censorText.insert(1.0, redacted)
+
+        showCensoredWin = Toplevel(root)
+        showCensoredWin.title("DAA Speech Recognition")
+        showCensoredWin.iconbitmap('img/favicon.ico')
+
+        labelframe1 = LabelFrame(showCensoredWin, text="Censored Words")
+        labelframe1.pack(fill="both", expand="yes")
+
+        toplabel = Label(labelframe1, text="Words censored using Boyer Moore Algorithm", font="Helvetica 12 bold")
+        toplabel.pack(pady=10)
+
+        patternLabel = Label(labelframe1, text="\nPatterns Found:", font="Helvetica 12 underline")
+        patternLabel.pack(padx=3)
+
+        for p in range(len(censor.list_pattern)):
+            patlistLabel = Label(labelframe1, text=str(censor.list_pattern[p]), font="Helvetica 12")
+            patlistLabel.pack(padx=3)
+
+        indexLabel = Label(labelframe1, text="\nMatch at Indexes:", font="Helvetica 12 underline")
+        indexLabel.pack(padx=3)
+
+        indexlistlabel = Label(labelframe1, text=", ".join(censor.final_index), font="Helvetica 12")
+        indexlistlabel.pack(padx=3)
 
 
 fontLabel = Font(family="Helvetica", size=12, weight="normal", underline=1)

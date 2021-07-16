@@ -1,8 +1,11 @@
-from tkinter import messagebox
+from tkinter import messagebox, Toplevel
+from tkinter import *
 import pandas as pd
 
 NO_OF_CHARS = 256
 list_index = []
+list_pattern = []
+final_index = []
 
 
 def bad_char_heuristic(string, size):
@@ -46,11 +49,10 @@ def boyer_moore_match(text, pattern):
 def occurrence(index):
     indexes = [index]
     list_index.append(indexes)
+    final_index.append(str(indexes)[1:-1])
 
 
 def censorFile(txt):
-    # get the text
-
     # open list of words
     df = pd.read_excel('swear_words.xlsx', 'Sheet1')
     swear_words = df['swear_words_list'].values.tolist()
@@ -59,16 +61,21 @@ def censorFile(txt):
         pattern = word_list
         boyer_moore_match(txt, pattern)
 
-        print("\nPattern: " + pattern)
-        print("List of Index: ")
-        print(*list_index)
-        # looping of censoring
-        for i in list_index:
-            print("Replacing at Index: " + str(i)[1:-1])
-            currIndex = int(str(i)[1:-1])
-            censored_text = txt[:currIndex] + "*" * len(pattern) + txt[currIndex + len(pattern):]
-            txt = censored_text
-            print(txt)
+        if list_index:
+
+            list_pattern.append(pattern)
+            print("\nPattern: " + pattern)
+            print("List of Index: ")
+            print(*list_index)
+            # looping of censoring
+            for i in list_index:
+                print("Replacing at Index: " + str(i)[1:-1])
+                currIndex = int(str(i)[1:-1])
+                censored_text = txt[:currIndex] + "*" * len(pattern) + txt[currIndex + len(pattern):]
+                txt = censored_text
+                print(txt)
+        else:
+            continue
         list_index.clear()
 
     return txt
