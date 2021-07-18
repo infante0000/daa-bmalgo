@@ -1,17 +1,18 @@
 # USE SCRATCH.PY TO TEST OUT CODE THEN TRANSFER TO MAIN.PY IF IT IS WORKING. THANKS!
-import os
-from tkinter import *
-from tkinter import ttk
-from tkinter import filedialog
-from tkinter.font import Font
-import speech_recognition as sr
-import pyttsx3
-from pygame import mixer
-from pydub import AudioSegment
-from tkinter import messagebox
-from functools import partial
 import time
-import censor, config_words
+from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox
+from tkinter import ttk
+from tkinter.font import Font
+
+import pyttsx3
+import speech_recognition as sr
+from pydub import AudioSegment
+from pygame import mixer
+
+import censor
+import config_words
 
 # root application
 root = Tk()
@@ -19,10 +20,14 @@ root.title("Censoring Tool")
 root.iconbitmap('img/favicon.ico')
 
 # style of root
+width = root.winfo_screenwidth()
+height = root.winfo_screenheight()
+root.geometry("%dx%d" % (width, height))
 style = ttk.Style()
 style.theme_use('winnative')
 
 photo = PhotoImage(file='img/microphone.png').subsample(25, 25)
+photo1 = PhotoImage(file='img/play-button.png').subsample(40, 40)
 
 
 def progressBar():
@@ -82,6 +87,9 @@ def speakBtn():
             messagebox.showerror("Error", "Sorry I can't recognize the audio. Please try again!")
             print("Sorry. I Don't Recognize The Audio")
 
+
+def playBtn():
+    pass
 
 def transcribeBtn():
     ogText.delete(1.0, END)
@@ -200,22 +208,26 @@ fontButton = Font(family="Helvetica", size=10, weight="bold")
 
 # define labels
 label1 = ttk.Label(root, text='Original Text', font=fontLabel)
-label1.grid(row=2, column=0, padx=10, sticky=W)
+label1.grid(row=2, column=0, padx=30, sticky=W)
 label2 = ttk.Label(root, text='Censored Text', font=fontLabel)
-label2.grid(row=4, column=0, padx=10, sticky=W)
+label2.grid(row=2, column=1, padx=60, sticky=W)
 
 # define textbox
-ogText = Text(root, width=75, padx=3, height=10, font=("Helvetica", 12))
-ogText.grid(row=3, column=0, padx=10, pady=10)
-censorText = Text(root, width=75, padx=3, height=10, font=("Helvetica", 12))
-censorText.grid(row=5, column=0, padx=10, pady=10)
+ogText = Text(root, width=68, padx=3, height=20, font=("Helvetica", 12))
+ogText.config(spacing1=4, spacing2=5, spacing3=2, padx=5)
+ogText.grid(row=3, column=0, padx=30, pady=10)
+censorText = Text(root, width=68, padx=3, height=20, font=("Helvetica", 12))
+censorText.config(spacing1=4, spacing2=5, spacing3=2, padx=5)
+censorText.grid(row=3, column=1, padx=60, pady=10)
 
 # define entry
-inputAudio = Entry(root, width=35, borderwidth=5, font=("Helvetica", 12))
-inputAudio.grid(row=0, column=0, columnspan=3, padx=110, pady=12)
+inputAudio = Entry(root, width=50, borderwidth=5, font=("Helvetica", 12))
+inputAudio.grid(row=0, column=0, columnspan=2, padx=240, pady=12)
 
 # define buttons
 btnSpeak = Button(root, image=photo, command=speakBtn, bd=0, activebackground='#c1bfbf', overrelief='groove',
+                  relief='sunken')
+btnPlay = Button(root, image=photo1, command=playBtn, bd=0, activebackground='#c1bfbf', overrelief='groove',
                   relief='sunken')
 btnUpload = Button(root, text="Upload a File", font=fontButton, command=uploadBtn)
 btnTranscribe = Button(root, text="Transcribe the File", font=fontButton, padx=35, command=transcribeBtn)
@@ -224,13 +236,14 @@ btnCensor = Button(root, text="Censor", font=fontButton, padx=62, command=censor
 btnClear = Button(root, text="Clear", font=fontButton, padx=63, command=clearBtn)
 btnQuit = Button(root, text="Exit Application", font=fontButton, padx=39, command=root.quit)
 
-# show the buttons
-btnSpeak.grid(row=0, column=0, padx=50, sticky=W)
-btnUpload.grid(row=0, column=0, padx=75, pady=5, columnspan=50, sticky=W)
+# display the buttons
+btnSpeak.grid(row=0, column=0, padx=315,  sticky=W)
+btnPlay.grid(row=0, column=0, padx=340, sticky=W)
+btnUpload.grid(row=0, column=0, padx=375, pady=5, columnspan=50, sticky=W)
 btnTranscribe.grid(row=6, column=0, columnspan=2, pady=5)
 btnAdd.grid(row=7, column=0, columnspan=2, pady=5)
 btnCensor.grid(row=8, column=0, columnspan=2, pady=5)
 btnClear.grid(row=9, column=0, pady=5, padx=15, sticky=W)
-btnQuit.grid(row=9, column=0, pady=5, padx=15, sticky=E)
+btnQuit.grid(row=9, column=1, pady=5, padx=15, sticky=E)
 
 root.mainloop()
