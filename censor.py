@@ -62,7 +62,6 @@ def censorFile(txt):
         boyer_moore_match(txt, pattern)
 
         if list_index:
-
             list_pattern.append(pattern)
             print("\nPattern: " + pattern)
             print("List of Index: ")

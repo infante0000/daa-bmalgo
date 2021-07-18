@@ -9,12 +9,13 @@ import pyttsx3
 from pygame import mixer
 from pydub import AudioSegment
 from tkinter import messagebox
+from functools import partial
 import time
-import censor
+import censor, config_words
 
 # root application
 root = Tk()
-root.title("DAA Speech Recognition")
+root.title("Censoring Tool")
 root.iconbitmap('img/favicon.ico')
 
 # style of root
@@ -26,7 +27,8 @@ photo = PhotoImage(file='img/microphone.png').subsample(25, 25)
 
 def progressBar():
     transWin = Toplevel(root)
-    transWin.title("DAA Speech Recognition")
+    transWin.title("Censoring Tool")
+    transWin.geometry("500x200")
     transWin.iconbitmap('img/favicon.ico')
 
     labelProg = Label(transWin, text="Transcribing your file. Please Wait...", font=("Helvetica", 12))
@@ -37,7 +39,7 @@ def progressBar():
     complete = 0
     speed = 10
     while complete < size:
-        time.sleep(0.05)
+        time.sleep(0.30)
         progress['value'] += (speed / size) * 100
         complete += speed
         transWin.update_idletasks()
@@ -142,13 +144,17 @@ def clearBtn():
 def addBtn():
     # new window app
     addWindow = Toplevel(root)
-    addWindow.geometry("500x200")
+    addWindow.geometry("500x300")
     addWindow.title("Add Words")
     addWindow.iconbitmap('img/favicon.ico')
-    lblCaption = Label(addWindow, text="You may add the words you wish to be censored.")
-    inputWord = Entry(addWindow, width=35, borderwidth=5)
-    btnAddWords = Button(addWindow, text="Add to List")
-    btnExit = Button(addWindow, text="Exit Window", command=addWindow.destroy)
+
+    #define widgets for addWindow
+    lblCaption = Label(addWindow, text="You may add the words you wish to be censored.\n Only input one word at a time.", font="Helvetica 12 bold")
+    inputWord = Entry(addWindow, width=35, font="Helvetica 14")
+    btnAddWords = Button(addWindow, text="Add to List", font="Helvetica 12", command=lambda: config_words.add(inputWord.get()))
+    btnExit = Button(addWindow, text="Exit Window", font="Helvetica 12" , command=addWindow.destroy)
+
+    #display in addWindow
     lblCaption.pack(pady=10)
     inputWord.pack(pady=10)
     btnAddWords.pack(pady=10)
@@ -165,7 +171,8 @@ def censorBtn():
         censorText.insert(1.0, redacted)
 
         showCensoredWin = Toplevel(root)
-        showCensoredWin.title("DAA Speech Recognition")
+        showCensoredWin.title("Censoring Tool")
+        showCensoredWin.geometry("500x300")
         showCensoredWin.iconbitmap('img/favicon.ico')
 
         labelframe1 = LabelFrame(showCensoredWin, text="Censored Words")
