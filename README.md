@@ -16,7 +16,8 @@ Language Used: Python
 
 Base Interpreter: Python 3.9
 
-1. Check requirements.txt and add all modules needed to be installed in the terminal/cmd
+1. Setup your virtual environment
+2. Check requirements.txt and add all modules needed to be installed in the terminal/cmd
 
 To run the code: 
 
