@@ -5,7 +5,6 @@ import pandas as pd
 NO_OF_CHARS = 256
 list_index = []
 list_pattern = []
-final_index = []
 
 
 def bad_char_heuristic(string, size):
@@ -21,7 +20,7 @@ def bad_char_heuristic(string, size):
 
 
 def boyer_moore_match(text, pattern):
-    # find the occurence of the patter in text
+    # find the occurence of the pattern in text
     m = len(pattern)
     n = len(text)
 
@@ -49,7 +48,6 @@ def boyer_moore_match(text, pattern):
 def occurrence(index):
     indexes = [index]
     list_index.append(indexes)
-    final_index.append(str(indexes)[1:-1])
 
 
 def censorFile(txt):
@@ -63,6 +61,7 @@ def censorFile(txt):
 
         if list_index:
             list_pattern.append(pattern)
+            list_pattern.extend(list_index)
             print("\nPattern: " + pattern)
             print("List of Index: ")
             print(*list_index)

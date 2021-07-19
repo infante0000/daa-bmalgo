@@ -1,4 +1,4 @@
-# USE SCRATCH.PY TO TEST OUT CODE THEN TRANSFER TO MAIN.PY IF IT IS WORKING. THANKS!
+
 import time
 from tkinter import *
 from tkinter import filedialog
@@ -89,7 +89,15 @@ def speakBtn():
 
 
 def playBtn():
-    pass
+    audfile = inputAudio.get()
+
+    if audfile:
+        mixer.init()
+        mixer.music.load(audfile)
+        mixer.music.play()
+        pass
+    else:
+        messagebox.showerror("Error", "There is no input to be played.")
 
 def transcribeBtn():
     ogText.delete(1.0, END)
@@ -180,7 +188,6 @@ def censorBtn():
 
         showCensoredWin = Toplevel(root)
         showCensoredWin.title("Censoring Tool")
-        showCensoredWin.geometry("500x300")
         showCensoredWin.iconbitmap('img/favicon.ico')
 
         labelframe1 = LabelFrame(showCensoredWin, text="Censored Words")
@@ -193,14 +200,9 @@ def censorBtn():
         patternLabel.pack(padx=3)
 
         for p in range(len(censor.list_pattern)):
+
             patlistLabel = Label(labelframe1, text=str(censor.list_pattern[p]), font="Helvetica 12")
             patlistLabel.pack(padx=3)
-
-        indexLabel = Label(labelframe1, text="\nMatch at Indexes:", font="Helvetica 12 underline")
-        indexLabel.pack(padx=3)
-
-        indexlistlabel = Label(labelframe1, text=", ".join(censor.final_index), font="Helvetica 12")
-        indexlistlabel.pack(padx=3)
 
 
 fontLabel = Font(family="Helvetica", size=12, weight="normal", underline=1)
