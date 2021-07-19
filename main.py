@@ -99,6 +99,7 @@ def playBtn():
     else:
         messagebox.showerror("Error", "There is no input to be played.")
 
+
 def transcribeBtn():
     ogText.delete(1.0, END)
     r = sr.Recognizer()
