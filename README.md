@@ -2,13 +2,15 @@
 
 --BSCS 2-1N--
 
-Censoring System for Selected Filipino Swear Words Using Boyer-Moore String Matching Algorithm 
-
 Arron Ken L. Baluyot, 
 Lindsay Anne D. Garcia, 
 Niña Angeline N. Infante, 
 Aiabelle P. Oribiana,
 Aine A. Rodriguez
+
+
+Censoring System for Selected Filipino Swear Words Using Boyer-Moore String Matching Algorithm 
+
 
 Language Used: Python
 
